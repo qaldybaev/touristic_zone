@@ -15,9 +15,8 @@ export class TouristZoneController {
 
     @Post()
     @UseInterceptors(FilesInterceptor("images"))
-    async create(@Body() payload: CreateTouristZoneDto, @UploadedFiles() images: Express.Multer.File[]
+    async create(@Body() payload: CreateTouristZoneDto, @UploadedFiles(new CheckFileSizePipe(5 * 1024 * 1024)) images: Express.Multer.File[]
     ) {
-        console.log(images);
         return await this.touristZoneService.create({ ...payload, images });
     }
 
@@ -28,7 +27,7 @@ export class TouristZoneController {
 
     @Put('update/:id')
     @UseInterceptors(FilesInterceptor("images"))
-    async updateImage(@Param('id', ParseIntPipe) id: number, @UploadedFiles() images: Express.Multer.File[]) {
+    async updateImage(@Param('id', ParseIntPipe) id: number, @UploadedFiles(new CheckFileSizePipe(5 * 1024 * 1024)) images: Express.Multer.File[]) {
         console.log(images);
         return await this.touristZoneService.updateImage(id, images);
     }
